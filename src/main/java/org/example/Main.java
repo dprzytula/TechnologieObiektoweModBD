@@ -6,16 +6,21 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main extends Application {
+import static org.example.CreateDatabaseController.database;
+
+public class Main {
 
     @FXML
     private TextField name0;
@@ -72,28 +77,29 @@ public class Main extends Application {
     @FXML
     private Button addRelationButton;
 
+
     Table table = new Table();
 
-    final Database database = Database.builder().databaseName("nowaBaza").tables(new ArrayList<>()).build();
 
-    public static void main(String [] args){
-        launch();
-    }
+
+
 
     @FXML
     void onClickGenerateScriptButton(ActionEvent event){
         Generator.generateDatabase(database);
     }
 
-    @FXML
-    void onClickAddTableButton(ActionEvent event){
-        List<Field> fieldsList = new ArrayList<>();
-        for(int i=0;i<3;i++){
-            fieldsList.add(Field.createField(name0.getCharacters().toString(), name1.getCharacters().toString()));
-        }
-        database.tables.add(Table.addTable(fieldsList));
+//    @FXML
+//    void onClickAddTableButton(ActionEvent event){
+//        List<Field> fieldsList = new ArrayList<>();
+//        for(int i=0;i<3;i++){
+//            fieldsList.add(Field.createField(name0.getCharacters().toString(), name1.getCharacters().toString()));
+//        }
+//        database.tables.add(Table.addTable(fieldsList));
+//
+//    }
 
-    }
+
 
 
 
@@ -113,6 +119,15 @@ public class Main extends Application {
         name2.setVisible(true);
         name3.setVisible(true);
         name4.setVisible(true);
+        name5.setVisible(true);
+        name6.setVisible(true);
+        type0.setVisible(true);
+        type1.setVisible(true);
+        type2.setVisible(true);
+        type3.setVisible(true);
+        type4.setVisible(true);
+        type5.setVisible(true);
+        type6.setVisible(true);
         addTableButton.setVisible(true);
         generateScriptButton.setVisible(true);
         deleteTableButton.setVisible(true);
@@ -120,14 +135,29 @@ public class Main extends Application {
     }
 
     @FXML
-    void onClickViewAddRelationForm(ActionEvent event) throws NoSuchFieldException, IllegalAccessException {
-        name2.setVisible(false);
-        name3.setVisible(false);
-        name4.setVisible(false);
-        addTableButton.setVisible(false);
-        generateScriptButton.setVisible(false);
-        deleteTableButton.setVisible(false);
-        addRelationButton.setVisible(true);
+    void onClickViewAddRelationForm(ActionEvent event) throws NoSuchFieldException, IllegalAccessException, IOException {
+        Stage stage = new Stage();
+        stage = (Stage)(((Node) event.getTarget()).getScene().getWindow());
+
+//        name2.setVisible(false);
+//        name3.setVisible(false);
+//        name4.setVisible(false);
+//        name5.setVisible(false);
+//        name6.setVisible(false);
+//        type0.setVisible(false);
+//        type1.setVisible(false);
+//        type2.setVisible(false);
+//        type3.setVisible(false);
+//        type4.setVisible(false);
+//        type5.setVisible(false);
+//        type6.setVisible(false);
+//        addTableButton.setVisible(false);
+//        generateScriptButton.setVisible(false);
+//        deleteTableButton.setVisible(false);
+//        addRelationButton.setVisible(true);
+        Parent scene2 = FXMLLoader.load(getClass().getClassLoader().getResource("Scene2.fxml"));
+        stage.setScene(new Scene(scene2, 1280,720));
+        stage.show();
     }
 
     public void onStart(){
@@ -139,13 +169,5 @@ public class Main extends Application {
         type4.setItems(dataTypes);
         type5.setItems(dataTypes);
         type6.setItems(dataTypes);
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Main.fxml"));
-        stage.setTitle("MainApp");
-        stage.setScene(new Scene(root, 1280,720));
-        stage.show();
     }
 }

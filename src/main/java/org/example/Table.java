@@ -16,11 +16,11 @@ public class Table{
     String tableName;
     List<Field> fields = new ArrayList<>();
 
-    public static Table addTable(List<Field> fieldsList){
+    public static Table addTable(String tableName, List<Field> fieldsList){
         //field = Field.builder().fieldName(id.getCharacters().toString()).dataType("integer").build();
 
         //fields.add(field);
-        return Table.builder().tableName("nowa").fields(fieldsList).build();
+        return Table.builder().tableName(tableName).fields(fieldsList).build();
     }
 
 }
