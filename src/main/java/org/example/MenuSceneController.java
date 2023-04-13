@@ -3,23 +3,32 @@ package org.example;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 import static org.example.CreateDatabaseController.database;
+import static org.example.CreateDatabaseController.options;
 
 public class MenuSceneController {
+
+    @FXML
+    private Button addTableButtonMenu;
 
     @FXML
     void menuAddTable(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         Parent scene = FXMLLoader.load(getClass().getClassLoader().getResource("AddTableScene.fxml"));
         stage.setScene(new Scene(scene, 880,520));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(addTableButtonMenu.getScene().getWindow());
         stage.show();
+        options.clear();
+        options.add("");
     }
 
     @FXML

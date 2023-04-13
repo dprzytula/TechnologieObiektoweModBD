@@ -8,14 +8,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import static org.example.AddTableSceneController.fieldsList;
+import static org.example.CreateDatabaseController.options;
 
 public class AddFieldController {
 
-    ObservableList<String> options =
+    ObservableList<String> types =
             FXCollections.observableArrayList(
-                    "Option 1",
-                    "Option 2",
-                    "Option 3"
+                    "INTEGER",
+                    "DATE_TIME",
+                    "VARCHAR"
             );
 
     @FXML
@@ -25,11 +26,31 @@ public class AddFieldController {
     private ComboBox type;
 
     @FXML
+    private TextField fieldSize;
+
+    @FXML
     private void initialize(){
-        type.setItems(options);
+        fieldSize.setVisible(false);
+        type.setItems(types);
     }
+
+    @FXML
+    void selectDataType(){
+        if(type.getSelectionModel().getSelectedItem().toString()=="VARCHAR") fieldSize.setVisible(true);
+        else fieldSize.setVisible(false);
+    }
+
     @FXML
     void onClickAddFieldButton(ActionEvent event){
-        fieldsList.add(Field.builder().fieldName(name.getText()).dataType(type.getSelectionModel().getSelectedItem().toString()).build());
+        if(type.getSelectionModel().getSelectedItem().toString()=="VARCHAR"){
+            fieldsList.add(Field.builder().fieldName(name.getText()).dataType(type.getSelectionModel().getSelectedItem().toString()).dataSize(fieldSize.getText()).build());
+            if(options.get(options.size()-1)=="") options.add(options.size()-1,name.getText()+" "+type.getSelectionModel().getSelectedItem().toString()+" "+fieldSize.getText());
+            else options.add(options.size(), name.getText()+" "+type.getSelectionModel().getSelectedItem().toString()+" "+fieldSize.getText());
+        }
+        else {
+            fieldsList.add(Field.builder().fieldName(name.getText()).dataType(type.getSelectionModel().getSelectedItem().toString()).build());
+            if(options.get(options.size()-1)=="") options.add(options.size()-1, name.getText()+" "+type.getSelectionModel().getSelectedItem().toString());
+            else options.add(options.size(),name.getText()+" "+type.getSelectionModel().getSelectedItem().toString());
+        }
     }
 }
