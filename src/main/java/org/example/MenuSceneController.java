@@ -9,7 +9,8 @@ import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
 
 import static org.example.CreateDatabaseController.database;
 import static org.example.CreateDatabaseController.options;
@@ -18,6 +19,9 @@ public class MenuSceneController {
 
     @FXML
     private Button addTableButtonMenu;
+
+    @FXML
+    private Button showERD;
 
     @FXML
     void menuAddTable(ActionEvent event) throws IOException {
@@ -57,11 +61,14 @@ public class MenuSceneController {
     }
 
     @FXML
-    void menuViewFullDatabase(ActionEvent event){
-
-        System.out.println(database.databaseName);
-        System.out.println(database.tables.get(0).getTableName());
-        System.out.println(database.tables.get(1).getTableName());
+    void menuViewFullDatabase(ActionEvent event) throws IOException, URISyntaxException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Diagram.fxml"));
+        stage.setTitle("MainApp");
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(showERD.getScene().getWindow());
+        stage.show();
     }
 
 }

@@ -9,7 +9,7 @@
       <Button layoutX="215.0" layoutY="91.0" mnemonicParsing="false" onAction="#menuRemoveTable" prefHeight="34.0" prefWidth="171.0" text="Usuń tabelę" />
       <Button layoutX="215.0" layoutY="134.0" mnemonicParsing="false" onAction="#menuAddRelation" prefHeight="34.0" prefWidth="171.0" text="Dodaj relację" />
       <Button layoutX="215.0" layoutY="183.0" mnemonicParsing="false" onAction="#menuDeleteRelation" prefHeight="34.0" prefWidth="171.0" text="Usuń relację" />
-      <Button layoutX="215.0" layoutY="231.0" mnemonicParsing="false" onAction="#menuViewFullDatabase" prefHeight="34.0" prefWidth="171.0" text="Pokaż aktualny stan bazy" />
+      <Button fx:id="showERD" layoutX="215.0" layoutY="231.0" mnemonicParsing="false" onAction="#menuViewFullDatabase" prefHeight="34.0" prefWidth="171.0" text="Pokaż aktualny stan bazy" />
       <Button layoutX="215.0" layoutY="322.0" mnemonicParsing="false" onAction="#menuExit" prefHeight="34.0" prefWidth="171.0" text="Wyjście" />
       <Button layoutX="215.0" layoutY="275.0" mnemonicParsing="false" onAction="#menuGenerateScript" prefHeight="34.0" prefWidth="171.0" text="Generuj skrypt" />
    </children>
