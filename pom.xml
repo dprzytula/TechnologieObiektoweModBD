@@ -33,6 +33,11 @@
                 <version>1.18.26</version>
                 <scope>provided</scope>
             </dependency>
+        <dependency>
+            <groupId>net.sourceforge.plantuml</groupId>
+            <artifactId>plantuml</artifactId>
+            <version>8059</version>
+        </dependency>
     </dependencies>
 
     <build>
