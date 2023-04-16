@@ -6,12 +6,11 @@ import java.io.IOException;
 
 public class Generator {
 
-    public static void generateDatabase(Database databaseName){
-        try{
+    public static void generateDatabase(Database databaseName) throws IOException {
             String fileName = "NowyPlik";
-            Table table = null;
-            Field field = null;
-            String script = null;
+            Table table;
+            Field field;
+            String script;
             int lastId;
             String database = databaseName.databaseName;
             script = "create database "+database+";\n";
@@ -26,6 +25,11 @@ public class Generator {
                     }
                     else script+= field.getFieldName()+" "+field.dataType+",\n";
                 }
+                for(int k=0;k<databaseName.tables.get(i).getRelations().size();k++){
+                    script+= "CONSTRAINT fk_"+databaseName.tables.get(i).getRelations().get(k).getForeignTableName()
+                            +" FOREIGN KEY("+databaseName.tables.get(i).getRelations().get(k).getKeyName()+" REFERENCES "+databaseName.tables.get(i).getRelations().get(k).getForeignTableName()
+                            +"("+databaseName.tables.get(i).getRelations().get(k).getKeyName()+"),\n";
+                }
                 lastId = databaseName.tables.get(i).fields.size()-1;
                 if(databaseName.tables.get(i).getFields().get(lastId).getDataType()=="VARCHAR"){
                     script+= databaseName.tables.get(i).fields.get(lastId).getFieldName()+" "+databaseName.tables.get(i).fields.get(lastId).getDataType()+"("+databaseName.tables.get(i).fields.get(lastId).getDataSize()+")"+"\n);";
@@ -37,10 +41,6 @@ public class Generator {
             writer.write(script);
 
             writer.close();
-        }
-        catch(IOException e){
-
-        }
     }
 
 }

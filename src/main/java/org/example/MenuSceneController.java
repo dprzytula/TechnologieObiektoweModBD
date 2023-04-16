@@ -42,7 +42,12 @@ public class MenuSceneController {
 
     @FXML
     void menuAddRelation(ActionEvent event) throws IOException {
-
+        Stage stage = new Stage();
+        Parent scene = FXMLLoader.load(getClass().getClassLoader().getResource("AddRelationScene.fxml"));
+        stage.setScene(new Scene(scene, 880,520));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(addTableButtonMenu.getScene().getWindow());
+        stage.show();
     }
 
     @FXML
@@ -51,7 +56,7 @@ public class MenuSceneController {
     }
 
     @FXML
-    void menuGenerateScript(ActionEvent event){
+    void menuGenerateScript(ActionEvent event) throws IOException {
         Generator.generateDatabase(database);
     }
 

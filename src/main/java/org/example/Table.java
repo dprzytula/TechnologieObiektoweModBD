@@ -1,7 +1,5 @@
 package org.example;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -15,12 +13,14 @@ import java.util.List;
 public class Table{
     String tableName;
     List<Field> fields = new ArrayList<>();
+    List<Relation> relations = new ArrayList<>();
 
     public static Table addTable(String tableName, List<Field> fieldsList){
-        //field = Field.builder().fieldName(id.getCharacters().toString()).dataType("integer").build();
+        return Table.builder().tableName(tableName).fields(fieldsList).relations(new ArrayList<>()).build();
+    }
 
-        //fields.add(field);
-        return Table.builder().tableName(tableName).fields(fieldsList).build();
+    public void addRelation(Relation relation){
+        this.relations.add(relation);
     }
 
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.AddRelationSceneController">
+   <children>
+      <Button fx:id="addRelationButton" layoutX="248.0" layoutY="162.0" mnemonicParsing="false" onAction="#addRelationToTable" text="Button" />
+      <ComboBox fx:id="tableFirst" layoutX="112.0" layoutY="54.0" prefWidth="150.0" />
+      <ComboBox fx:id="tableSecond" layoutX="112.0" layoutY="103.0" prefWidth="150.0" />
+   </children>
+</AnchorPane>

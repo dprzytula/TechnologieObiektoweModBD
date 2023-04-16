@@ -7,9 +7,9 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+
+import static org.example.CreateDatabaseController.database;
 
 public class ERDiagramController {
 
@@ -18,18 +18,20 @@ public class ERDiagramController {
 
     @FXML
     void initialize() throws IOException {
-            SourceStringReader reader = new SourceStringReader(generateErdDiagram());
-            reader.generateImage(new FileOutputStream("src/main/resources/test.png"), new FileFormatOption(FileFormat.PNG, false));
-            erdDiagram.setImage(new Image((new File("test.png")).toString()));
+        SourceStringReader reader = new SourceStringReader(generateErdDiagram());
+        reader.generateImage(new FileOutputStream("src/main/resources/test.png"), new FileFormatOption(FileFormat.PNG, false));
+        InputStream stream = new FileInputStream("src/main/resources/test.png");
+        erdDiagram.setImage(new Image(stream));
+        stream.close();
     }
 
     String generateErdDiagram(){
-        StringBuilder plantUmlSource = new StringBuilder();
-        plantUmlSource.append("@startuml\n");
-        plantUmlSource.append("test1234 -> Bob: Authentication Request\n");
-        plantUmlSource.append("Bob --> test1234: Authentication Response\n");
-        plantUmlSource.append("@enduml");
-        return plantUmlSource.toString();
+        String plantUmlSource = "@startuml\n";
+        plantUmlSource+="entity "+database.tables.get(0).getTableName()+"{"+"\n"+"}"+"\n";
+        plantUmlSource+="entity "+database.tables.get(1).getTableName()+"{"+"\n"+"}"+"\n";
+       // plantUmlSource+=""+database.tables.get(0).getTableName()+" }|--|| "+database.tables.get(1).getTableName()+"\n";
+        plantUmlSource+="@enduml\n";
+        return plantUmlSource;
     }
 
 }
