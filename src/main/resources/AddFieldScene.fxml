@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,7 +10,10 @@
    <children>
       <TextField fx:id="name" layoutX="148.0" layoutY="67.0" />
       <ComboBox fx:id="type" layoutX="318.0" layoutY="67.0" onAction="#selectDataType" prefHeight="25.0" prefWidth="119.0" />
-      <Button layoutX="306.0" layoutY="126.0" mnemonicParsing="false" onAction="#onClickAddFieldButton" text="Dodaj pole do tabeli" />
+      <Button layoutX="312.0" layoutY="146.0" mnemonicParsing="false" onAction="#onClickAddFieldButton" text="Dodaj pole do tabeli" />
       <TextField fx:id="fieldSize" layoutX="460.0" layoutY="67.0" prefHeight="25.0" prefWidth="61.0" />
+      <CheckBox fx:id="notNull" layoutX="328.0" layoutY="108.0" mnemonicParsing="false" text="NOT NULL" />
+      <CheckBox fx:id="primaryKey" layoutX="223.0" layoutY="108.0" mnemonicParsing="false" text="PRIMARY KEY" />
+      <CheckBox fx:id="unique" layoutX="424.0" layoutY="108.0" mnemonicParsing="false" text="UNIQUE" />
    </children>
 </AnchorPane>

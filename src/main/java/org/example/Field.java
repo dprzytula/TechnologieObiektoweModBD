@@ -12,5 +12,6 @@ public class Field {
     String fieldName;
     String dataType;
     String dataSize;
+    Parameters parameters;
 
 }
