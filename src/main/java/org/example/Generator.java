@@ -11,6 +11,7 @@ public class Generator {
             Table table;
             Field field;
             String script;
+            Field foreignPrimaryKey = null;
             int lastId;
             String database = databaseName.databaseName;
             script = "create database "+database+";\n";
@@ -36,9 +37,21 @@ public class Generator {
                     }
                 }
                 for(int k=0;k<databaseName.tables.get(i).getRelations().size();k++){
-                    script+= "CONSTRAINT fk_"+databaseName.tables.get(i).getRelations().get(k).getForeignTableName()
-                            +" FOREIGN KEY("+databaseName.tables.get(i).getRelations().get(k).getKeyName()+" REFERENCES "+databaseName.tables.get(i).getRelations().get(k).getForeignTableName()
-                            +"("+databaseName.tables.get(i).getRelations().get(k).getKeyName()+"),\n";
+                    for(int z=0;z<databaseName.tables.size();z++) {
+                        if(databaseName.tables.get(i).getRelations().get(k).getForeignTableName()==databaseName.tables.get(z).getTableName()){
+                            for(int y = 0; y<databaseName.tables.get(z).getFields().size();y++){
+                                if(databaseName.tables.get(z).getFields().get(y).getParameters().primaryKey==true) foreignPrimaryKey = databaseName.tables.get(z).getFields().get(y);
+                            }
+                            if(foreignPrimaryKey.getDataType()=="VARCHAR"){
+
+                            }
+                            else {
+                                script+=foreignPrimaryKey.getFieldName()+"_id "+foreignPrimaryKey.getDataType()+",\n"+"CONSTRAINT fk_"+databaseName.tables.get(i).getRelations().get(k).getForeignTableName()
+                                        +" FOREIGN KEY("+foreignPrimaryKey.getFieldName()+"_id) "+" REFERENCES "+databaseName.tables.get(i).getRelations().get(k).getForeignTableName()
+                                        +"("+foreignPrimaryKey.getFieldName()+"),\n";
+                            }
+                        }
+                    }
                 }
                 lastId = databaseName.tables.get(i).fields.size()-1;
                 field = databaseName.tables.get(i).fields.get(lastId);

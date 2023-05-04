@@ -8,6 +8,7 @@ import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
 
 import java.io.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.example.CreateDatabaseController.database;
 
@@ -26,12 +27,22 @@ public class ERDiagramController {
     }
 
     String generateErdDiagram(){
-        String plantUmlSource = "@startuml\n";
-        plantUmlSource+="entity "+database.tables.get(0).getTableName()+"{"+"\n"+"}"+"\n";
-        plantUmlSource+="entity "+database.tables.get(1).getTableName()+"{"+"\n"+"}"+"\n";
+        AtomicReference<String> finalPlantUmlSource = new AtomicReference<>("@startuml\n");
+        database.tables.forEach(table->{
+            finalPlantUmlSource.set(finalPlantUmlSource +"entity "+table.getTableName()+"{"+"\n"+"}"+"\n");
+        });
+        database.tables.forEach(table->{
+            table.getRelations().forEach(relation ->
+                    finalPlantUmlSource.set(finalPlantUmlSource +table.getTableName()+" }|--|| "+relation.getForeignTableName()+"\n")
+                    );
+        });
+
+
+//        plantUmlSource+="entity "+database.tables.get(0).getTableName()+"{"+"\n"+"}"+"\n";
+//        plantUmlSource+="entity "+database.tables.get(1).getTableName()+"{"+"\n"+"}"+"\n";
        // plantUmlSource+=""+database.tables.get(0).getTableName()+" }|--|| "+database.tables.get(1).getTableName()+"\n";
-        plantUmlSource+="@enduml\n";
-        return plantUmlSource;
+        finalPlantUmlSource.set(finalPlantUmlSource+"@enduml\n");
+        return finalPlantUmlSource.get().toString();
     }
 
 }
