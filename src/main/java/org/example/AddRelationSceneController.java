@@ -23,12 +23,4 @@ public class AddRelationSceneController {
         tableSecond.setItems(tables);
     }
 
-    @FXML
-    void addRelationToTable(){
-        database.tables.forEach(table-> {
-            if(table.getTableName()==tableFirst.getSelectionModel().getSelectedItem().toString())
-                table.addRelation(Relation.addRelation(tableSecond.getSelectionModel().getSelectedItem().toString()));
-        });
-    }
-
 }

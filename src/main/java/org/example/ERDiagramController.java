@@ -31,11 +31,11 @@ public class ERDiagramController {
         database.tables.forEach(table->{
             finalPlantUmlSource.set(finalPlantUmlSource +"entity "+table.getTableName()+"{"+"\n"+"}"+"\n");
         });
-        database.tables.forEach(table->{
-            table.getRelations().forEach(relation ->
-                    finalPlantUmlSource.set(finalPlantUmlSource +table.getTableName()+" }|--|| "+relation.getForeignTableName()+"\n")
-                    );
-        });
+//        database.tables.forEach(table->{
+//            table.getRelations().forEach(relation ->
+//                    finalPlantUmlSource.set(finalPlantUmlSource +table.getTableName()+" }|--|| "+relation.getForeignTableName()+"\n")
+//                    );
+//        });
 
 
 //        plantUmlSource+="entity "+database.tables.get(0).getTableName()+"{"+"\n"+"}"+"\n";

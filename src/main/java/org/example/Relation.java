@@ -8,11 +8,11 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Relation {
-    String foreignTableName;
-    String keyName;
+    String mainTableId;
+    String foreignTableId;
 
-    public static Relation addRelation(String tableName){
-        return Relation.builder().foreignTableName(tableName).keyName(tableName+"_id").build();
+    public static Relation addRelation(String mainTableId, String foreignTableId){
+        return Relation.builder().mainTableId(mainTableId).foreignTableId(foreignTableId).build();
     }
 
 }
