@@ -8,7 +8,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
-import static org.example.AddTableSceneController.fieldsList;
 import static org.example.CreateDatabaseController.options;
 
 public class AddFieldController {
@@ -56,14 +55,14 @@ public class AddFieldController {
         if(type.getSelectionModel().getSelectedItem().toString()=="VARCHAR"){
             if(primaryKey.isSelected()) parameters = Parameters.builder().primaryKey(primaryKey.isSelected()).notNull(false).unique(false).build();
             else parameters = Parameters.builder().primaryKey(false).notNull(notNull.isSelected()).unique(unique.isSelected()).build();
-            fieldsList.add(Field.builder().fieldName(name.getText()).dataType(type.getSelectionModel().getSelectedItem().toString()).dataSize(fieldSize.getText()).parameters(parameters).build());
+          //  fieldsList.add(Field.builder().fieldName(name.getText()).dataType(type.getSelectionModel().getSelectedItem().toString()).dataSize(fieldSize.getText()).parameters(parameters).build());
             if(options.get(options.size()-1)=="") options.add(options.size()-1,name.getText()+" "+type.getSelectionModel().getSelectedItem().toString()+" "+fieldSize.getText());
             else options.add(options.size(), name.getText()+" "+type.getSelectionModel().getSelectedItem().toString()+" "+fieldSize.getText());
         }
         else {
             if(primaryKey.isSelected()) parameters = Parameters.builder().primaryKey(primaryKey.isSelected()).notNull(false).unique(false).build();
             else parameters = Parameters.builder().primaryKey(false).notNull(notNull.isSelected()).unique(unique.isSelected()).build();
-            fieldsList.add(Field.builder().fieldName(name.getText()).dataType(type.getSelectionModel().getSelectedItem().toString()).parameters(parameters).build());
+           // fieldsList.add(Field.builder().fieldName(name.getText()).dataType(type.getSelectionModel().getSelectedItem().toString()).parameters(parameters).build());
             if(options.get(options.size()-1)=="") options.add(options.size()-1, name.getText()+" "+type.getSelectionModel().getSelectedItem().toString());
             else options.add(options.size(),name.getText()+" "+type.getSelectionModel().getSelectedItem().toString());
         }

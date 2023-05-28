@@ -35,7 +35,7 @@ public class AddTableSceneController {
 
     @FXML
     void onClickAddTableButton(ActionEvent event){
-        database.tables.add(Table.addTable(tableName.getText(), fieldsList));
+        database.tables.add(Table.addTable("1", tableName.getText(), fieldsList));
         Stage stage = (Stage)addTableButton.getScene().getWindow();
         stage.close();
         fieldsList = new ArrayList<>();

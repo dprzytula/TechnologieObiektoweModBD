@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.URISyntaxException;
 
-import static org.example.CreateDatabaseController.database;
 import static org.example.CreateDatabaseController.options;
 
 public class MenuSceneController {
@@ -57,7 +56,7 @@ public class MenuSceneController {
 
     @FXML
     void menuGenerateScript(ActionEvent event) throws IOException {
-        Generator.generateDatabase(database);
+       // Generator.generateDatabase(database);
     }
 
     @FXML

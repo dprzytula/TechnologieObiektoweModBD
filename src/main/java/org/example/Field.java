@@ -8,10 +8,12 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Field {
-
     String fieldName;
-    String dataType;
-    String dataSize;
-    Parameters parameters;
-
+    Boolean primaryKey;
+    Boolean foreignKey;
+    Boolean unique;
+    Boolean notNull;
+    String fieldType;
+    Integer fieldSize;
+    String checkParam;
 }

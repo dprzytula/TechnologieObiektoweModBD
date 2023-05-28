@@ -6,51 +6,71 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 
 public class TableViewModel {
-    public CheckBox getNewRow() {
-        return newRow;
+
+    public TableViewModel(ObservableList keyRow, String fieldNameRow, ObservableList fieldTypeRow, String fieldSizeRow, String checkRow) {
+        this.keyRow = new ComboBox(keyRow);
+        this.fieldNameRow = new SimpleStringProperty(fieldNameRow);
+        this.fieldTypeRow = new ComboBox(fieldTypeRow);
+        this.fieldSizeRow = new SimpleStringProperty(fieldSizeRow);
+        this.uniqueRow = new CheckBox();
+        this.notNullRow = new CheckBox();
+        this.checkRow = new SimpleStringProperty(checkRow);
     }
 
-    private final CheckBox newRow;
-    private final SimpleStringProperty fieldName;
+    private final ComboBox keyRow;
+    private final SimpleStringProperty fieldNameRow;
+    private final ComboBox fieldTypeRow;
+    private final SimpleStringProperty fieldSizeRow;
+    private final CheckBox uniqueRow;
+    private final CheckBox notNullRow;
+    private final SimpleStringProperty checkRow;
 
-    public String getFieldName() {
-        return fieldName.get();
+
+    public ComboBox getKeyRow() {
+        return keyRow;
     }
 
-    public SimpleStringProperty fieldNameProperty() {
-        return fieldName;
+    public String getFieldNameRow() {
+        return fieldNameRow.get();
     }
 
-    public void setFieldName(String fieldName) {
-        this.fieldName.set(fieldName);
+    public SimpleStringProperty fieldNameRowProperty() {
+        return fieldNameRow;
     }
 
-    public ComboBox getFieldType() {
-        return fieldType;
+    public void setFieldNameRow(String fieldNameRow) {
+        this.fieldNameRow.set(fieldNameRow);
     }
 
-    public String getFieldSize() {
-        return fieldSize.get();
+    public ComboBox getFieldTypeRow() {
+        return fieldTypeRow;
     }
 
-    public SimpleStringProperty fieldSizeProperty() {
-        return fieldSize;
+    public String getFieldSizeRow() {
+        return fieldSizeRow.get();
     }
 
-    public void setFieldSize(String fieldSize) {
-        this.fieldSize.set(fieldSize);
+    public SimpleStringProperty fieldSizeRowProperty() {
+        return fieldSizeRow;
     }
 
-    private final ComboBox fieldType;
-
-    private final SimpleStringProperty fieldSize;
-
-    public TableViewModel(String fieldName, ObservableList data, String fieldSize) {
-        this.newRow = new CheckBox();
-        this.fieldName = new SimpleStringProperty(fieldName);
-        this.fieldType = new ComboBox(data);
-        this.fieldSize = new SimpleStringProperty(fieldSize);
+    public void setFieldSizeRow(String fieldSizeRow) {
+        this.fieldSizeRow.set(fieldSizeRow);
     }
 
+    public void setCheckRow(String checkRow) {
+        this.checkRow.set(checkRow);
+    }
 
+    public CheckBox getUniqueRow() {
+        return uniqueRow;
+    }
+
+    public CheckBox getNotNullRow() {
+        return notNullRow;
+    }
+
+    public String getCheckRow() {
+        return checkRow.get();
+    }
 }
