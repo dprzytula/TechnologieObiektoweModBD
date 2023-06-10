@@ -8,7 +8,8 @@
    <children>
       <Button fx:id="addTableButton" layoutX="56.0" layoutY="26.0" mnemonicParsing="false" onAction="#createTable" text="Dodaj tabelę" />
       <Pane fx:id="databasePanel" layoutX="5.0" layoutY="88.0" prefHeight="619.0" prefWidth="911.0" />
-      <Button layoutX="212.0" layoutY="26.0" mnemonicParsing="false" text="Dodaj relację" />
+      <Button layoutX="212.0" layoutY="26.0" mnemonicParsing="false" onAction="#drawLine" text="Dodaj relację" />
       <Button layoutX="343.0" layoutY="26.0" mnemonicParsing="false" onAction="#readScript" text="Zapisz skrypt" />
+      <Button fx:id="databaseCreator" layoutX="472.0" layoutY="26.0" mnemonicParsing="false" onAction="#openDatabaseCreator" text="Utwórz bazę" />
    </children>
 </AnchorPane>

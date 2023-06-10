@@ -54,6 +54,10 @@ public class TableViewModel {
         return fieldSizeRow;
     }
 
+    public SimpleStringProperty checkRowProperty() {
+        return checkRow;
+    }
+
     public void setFieldSizeRow(String fieldSizeRow) {
         this.fieldSizeRow.set(fieldSizeRow);
     }

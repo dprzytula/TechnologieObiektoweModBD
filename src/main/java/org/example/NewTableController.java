@@ -1,6 +1,5 @@
 package org.example;
 
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,9 +23,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewTableController extends Application {
+public class NewTableController {
 
-    Database database = new Database();
+    public static Database database = new Database();
 
     public static List<TableView> tablesToGenerate = new ArrayList<>();
 
@@ -126,6 +125,16 @@ public class NewTableController extends Application {
     }
 
     @FXML
+    public void openDatabaseCreator(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("DbConnectionView.fxml"));
+        stage.setScene(new Scene(root, 880,520));
+//        stage.initModality(Modality.WINDOW_MODAL);
+//        stage.initOwner(addTableButtonMenu.getScene().getWindow());
+        stage.show();
+    }
+
+    @FXML
     public void readScript(ActionEvent event){
         List<Node> tables = databasePanel.getChildren().stream().filter(element -> element.getTypeSelector().equals("TableView")).toList();
         List<TableView> tableViews = new ArrayList<>();
@@ -135,15 +144,15 @@ public class NewTableController extends Application {
         });
         tableViews.forEach((table)->{
             List<Field> fields = new ArrayList<>();
-            TableColumn tableView = (TableColumn) table.getColumns().get(0);
+            TableColumn tableColumnView = (TableColumn) table.getColumns().get(0);
             for (int j = 0; j < table.getItems().size(); j++) {
-                TableColumn keyColumn = (TableColumn) tableView.getColumns().get(0);
-                TableColumn nameColumn = (TableColumn) tableView.getColumns().get(1);
-                TableColumn typeColumn = (TableColumn) tableView.getColumns().get(2);
-                TableColumn sizeColumn = (TableColumn) tableView.getColumns().get(3);
-                TableColumn uniqueColumn = (TableColumn) tableView.getColumns().get(4);
-                TableColumn notNullColumn = (TableColumn) tableView.getColumns().get(5);
-                TableColumn checkColumn = (TableColumn) tableView.getColumns().get(6);
+                TableColumn keyColumn = (TableColumn) tableColumnView.getColumns().get(0);
+                TableColumn nameColumn = (TableColumn) tableColumnView.getColumns().get(1);
+                TableColumn typeColumn = (TableColumn) tableColumnView.getColumns().get(2);
+                TableColumn sizeColumn = (TableColumn) tableColumnView.getColumns().get(3);
+                TableColumn uniqueColumn = (TableColumn) tableColumnView.getColumns().get(4);
+                TableColumn notNullColumn = (TableColumn) tableColumnView.getColumns().get(5);
+                TableColumn checkColumn = (TableColumn) tableColumnView.getColumns().get(6);
                 ComboBox keyColumnValue = (ComboBox) keyColumn.getCellObservableValue(j).getValue();
                 Object nameColumnValue = nameColumn.getCellObservableValue(j).getValue();
                 ComboBox typeColumnValue = (ComboBox) typeColumn.getCellObservableValue(j).getValue();
@@ -172,7 +181,8 @@ public class NewTableController extends Application {
                 fields.add(Field.builder().fieldName(fieldName).fieldType(fieldType).fieldSize(fieldSize).primaryKey(primaryKey)
                         .foreignKey(foreignKey).unique(unique).notNull(notNull).checkParam(checkParam).build());
             }
-            database.tables.add(Table.addTable(tableView.getId(), tableView.getText(), fields));
+            System.out.println(table.getId());
+            database.tables.add(Table.addTable(table.getId(), tableColumnView.getText(), fields));
         });
     }
 
@@ -220,8 +230,23 @@ public class NewTableController extends Application {
         node.setOnMouseDragged(e->{
             node.setTranslateX(e.getSceneX()-startX);
             node.setTranslateY(e.getSceneY()-startY);
-           // drawLines();
+            drawLines();
         });
+    }
+
+    @FXML
+    public void drawLine(ActionEvent event){
+        Pane root = databasePanel;
+        Line l = new Line();
+        TableView tb = (TableView) databasePanel.lookup("#0");
+        TableView tb2 = (TableView) databasePanel.lookup("#1");
+        l.setStartX(tb.getBoundsInParent().getMaxX());
+        l.setStartY(tb.getBoundsInParent().getMaxY());
+        l.setEndX(tb2.getBoundsInParent().getMinX());
+        l.setEndY(tb2.getBoundsInParent().getMinY());
+        List<Node> lines = databasePanel.getChildren().stream().filter(element -> element.getTypeSelector().equals("Line")).toList();
+        lines.stream().forEach(node -> databasePanel.getChildren().remove(node));
+        root.getChildren().add(l);
     }
 
     public void drawLines(){
@@ -237,17 +262,4 @@ public class NewTableController extends Application {
         lines.stream().forEach(node -> databasePanel.getChildren().remove(node));
         root.getChildren().add(l);
     }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("NewTableScene.fxml"));
-        stage.setTitle("MainApp");
-        stage.setWidth(1920);
-        stage.setHeight(1080);
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
-
-
-
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DbConnectionController">
+   <children>
+      <Button layoutX="324.0" layoutY="293.0" mnemonicParsing="false" onAction="#createDatabase" text="Utwórz bazę" />
+      <Button layoutX="164.0" layoutY="293.0" mnemonicParsing="false" text="Wyjdź" />
+      <TextField fx:id="loginDb" layoutX="197.0" layoutY="71.0" />
+      <Label layoutX="126.0" layoutY="75.0" text="Login" />
+      <Label layoutX="127.0" layoutY="123.0" text="Hasło" />
+      <PasswordField fx:id="passwordDb" layoutX="197.0" layoutY="119.0" />
+      <TextField fx:id="addressDb" layoutX="197.0" layoutY="154.0" />
+      <Label layoutX="126.0" layoutY="158.0" text="Adres bazy" />
+      <TextField fx:id="portDb" layoutX="197.0" layoutY="188.0" />
+      <Label layoutX="126.0" layoutY="192.0" text="Port" />
+   </children>
+</AnchorPane>
