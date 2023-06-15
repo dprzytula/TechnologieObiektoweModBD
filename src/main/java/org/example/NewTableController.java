@@ -1,6 +1,7 @@
 package org.example;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,6 +28,8 @@ public class NewTableController {
 
     public static Database database = new Database();
 
+    private static List<Table> emptyTables = new ArrayList<>();
+
     public static List<TableView> tablesToGenerate = new ArrayList<>();
 
     @FXML
@@ -46,6 +49,9 @@ public class NewTableController {
 
     @FXML
     private Button createTableButton;
+
+    private static ObservableList<String> keyTypes = FXCollections.observableArrayList("PK", "FK");
+    private static ObservableList<String> dataTypes = FXCollections.observableArrayList("INT","BIGINT", "VARCHAR","DATE");
 
     private double startX;
     private double startY;
@@ -117,7 +123,7 @@ public class NewTableController {
         newTable.getColumns().add(tableNameColumn);
         columnAmount = Integer.parseInt(columnAmounts.getText());
 
-        for(int i=0;i<columnAmount;i++) options.add(new TableViewModel(FXCollections.observableArrayList("PK","FK"),"",FXCollections.observableArrayList("Test"),"",""));
+        for(int i=0;i<columnAmount;i++) options.add(new TableViewModel(keyTypes,"",dataTypes,"",""));
         newTable.setItems(options);
         tablesToGenerate.add(newTable);
         stage.close();
@@ -136,6 +142,8 @@ public class NewTableController {
 
     @FXML
     public void readScript(ActionEvent event){
+        database.tables.clear();
+        database.tables = emptyTables;
         List<Node> tables = databasePanel.getChildren().stream().filter(element -> element.getTypeSelector().equals("TableView")).toList();
         List<TableView> tableViews = new ArrayList<>();
         tables.forEach((table)->{

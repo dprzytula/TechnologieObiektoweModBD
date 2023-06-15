@@ -12,10 +12,26 @@ public class DbScriptGenerator {
         List<Table> tablesList = database.tables.stream().toList();
 
         tablesList.stream().forEach(table -> {
-            script.set(script+"create table "+table.getTableName()+"("+");");
+            script.set(
+                    script+"create table "+table.getTableName()+"(\n"+
+                    getFieldsFromTableObject(table)+");\n");
         });
 
         return script.get();
     }
+
+    public static String getFieldsFromTableObject(Table tableName){
+        var fieldsList = tableName.getFields();
+        AtomicReference<String> tableFieldsToScript = new AtomicReference<>("");
+        for(int i=0; i<fieldsList.size()-1;i++){
+            if(fieldsList.get(i).fieldType=="DATE" || fieldsList.get(i).fieldType=="INT" || fieldsList.get(i).fieldType=="BIGINT") tableFieldsToScript.set(tableFieldsToScript+fieldsList.get(i).getFieldName()+" "+fieldsList.get(i).fieldType+",\n");
+            else tableFieldsToScript.set(tableFieldsToScript+fieldsList.get(i).getFieldName()+" "+fieldsList.get(i).fieldType+"("+fieldsList.get(i).getFieldSize()+"),\n");
+        }
+        if(fieldsList.get(fieldsList.size()-1).fieldType=="DATE" || fieldsList.get(fieldsList.size()-1).fieldType=="INT" || fieldsList.get(fieldsList.size()-1).fieldType=="BIGINT");
+            else tableFieldsToScript.set(tableFieldsToScript+fieldsList.get(fieldsList.size()-1).getFieldName()+" "
+                    +fieldsList.get(fieldsList.size()-1).fieldType+"("+fieldsList.get(fieldsList.size()-1).getFieldSize()+")\n");
+        return tableFieldsToScript.get();
+    }
+
 
 }
