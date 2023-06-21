@@ -28,6 +28,8 @@ public class NewTableController {
 
     public static Database database = new Database();
 
+    public static List<Relation> relations = new ArrayList<>();
+
     private static List<Table> emptyTables = new ArrayList<>();
 
     public static List<TableView> tablesToGenerate = new ArrayList<>();
@@ -50,7 +52,7 @@ public class NewTableController {
     @FXML
     private Button createTableButton;
 
-    private static ObservableList<String> keyTypes = FXCollections.observableArrayList("PK", "FK");
+    private static ObservableList<String> keyTypes = FXCollections.observableArrayList("PK");
     private static ObservableList<String> dataTypes = FXCollections.observableArrayList("INT","BIGINT", "VARCHAR","DATE");
 
     private double startX;
@@ -131,6 +133,20 @@ public class NewTableController {
     }
 
     @FXML
+    public void addRelationView(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("AddRelationScene.fxml"));
+        stage.setScene(new Scene(root, 880,520));
+//        stage.initModality(Modality.WINDOW_MODAL);
+//        stage.initOwner(addTableButtonMenu.getScene().getWindow());
+        stage.show();
+
+        stage.setOnCloseRequest(windowEvent -> {
+            drawLines();
+        });
+    }
+
+    @FXML
     public void openDatabaseCreator(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("DbConnectionView.fxml"));
@@ -169,16 +185,8 @@ public class NewTableController {
                 CheckBox notNullColumnValue = (CheckBox) notNullColumn.getCellObservableValue(j).getValue();
                 Object checkColumnValue = checkColumn.getCellObservableValue(j).getValue();
                 Boolean primaryKey = false;
-                Boolean foreignKey = false;
                 if(keyColumnValue.getSelectionModel().getSelectedItem().equals("PK")){
                     primaryKey = true;
-                }
-                else if(keyColumnValue.getSelectionModel().getSelectedItem().equals("FK")){
-                    foreignKey = true;
-                }
-                else if(keyColumnValue.getSelectionModel().getSelectedItem() == null){
-                    primaryKey = false;
-                    foreignKey = false;
                 }
                 String fieldName = nameColumnValue.toString();
                 String fieldType = typeColumnValue.getSelectionModel().getSelectedItem().toString();
@@ -187,7 +195,7 @@ public class NewTableController {
                 Boolean notNull = notNullColumnValue.isSelected();
                 String checkParam = checkColumnValue.toString();
                 fields.add(Field.builder().fieldName(fieldName).fieldType(fieldType).fieldSize(fieldSize).primaryKey(primaryKey)
-                        .foreignKey(foreignKey).unique(unique).notNull(notNull).checkParam(checkParam).build());
+                        .unique(unique).notNull(notNull).checkParam(checkParam).build());
             }
             System.out.println(table.getId());
             database.tables.add(Table.addTable(table.getId(), tableColumnView.getText(), fields));
@@ -238,7 +246,6 @@ public class NewTableController {
         node.setOnMouseDragged(e->{
             node.setTranslateX(e.getSceneX()-startX);
             node.setTranslateY(e.getSceneY()-startY);
-            drawLines();
         });
     }
 

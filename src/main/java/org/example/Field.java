@@ -10,7 +10,6 @@ import lombok.*;
 public class Field {
     String fieldName;
     Boolean primaryKey;
-    Boolean foreignKey;
     Boolean unique;
     Boolean notNull;
     String fieldType;

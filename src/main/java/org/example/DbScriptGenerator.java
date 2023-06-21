@@ -27,7 +27,8 @@ public class DbScriptGenerator {
             if(fieldsList.get(i).fieldType=="DATE" || fieldsList.get(i).fieldType=="INT" || fieldsList.get(i).fieldType=="BIGINT") tableFieldsToScript.set(tableFieldsToScript+fieldsList.get(i).getFieldName()+" "+fieldsList.get(i).fieldType+",\n");
             else tableFieldsToScript.set(tableFieldsToScript+fieldsList.get(i).getFieldName()+" "+fieldsList.get(i).fieldType+"("+fieldsList.get(i).getFieldSize()+"),\n");
         }
-        if(fieldsList.get(fieldsList.size()-1).fieldType=="DATE" || fieldsList.get(fieldsList.size()-1).fieldType=="INT" || fieldsList.get(fieldsList.size()-1).fieldType=="BIGINT");
+        if(fieldsList.get(fieldsList.size()-1).fieldType=="DATE" || fieldsList.get(fieldsList.size()-1).fieldType=="INT" || fieldsList.get(fieldsList.size()-1).fieldType=="BIGINT") tableFieldsToScript.set(tableFieldsToScript+fieldsList.get(fieldsList.size()-1).getFieldName()+" "
+                +fieldsList.get(fieldsList.size()-1).fieldType+"\n");
             else tableFieldsToScript.set(tableFieldsToScript+fieldsList.get(fieldsList.size()-1).getFieldName()+" "
                     +fieldsList.get(fieldsList.size()-1).fieldType+"("+fieldsList.get(fieldsList.size()-1).getFieldSize()+")\n");
         return tableFieldsToScript.get();
