@@ -10,6 +10,7 @@
       <Pane fx:id="databasePanel" layoutX="5.0" layoutY="88.0" prefHeight="619.0" prefWidth="911.0" />
       <Button layoutX="212.0" layoutY="26.0" mnemonicParsing="false" onAction="#addRelationView" text="Dodaj relację" />
       <Button layoutX="343.0" layoutY="26.0" mnemonicParsing="false" onAction="#readScript" text="Zapisz skrypt" />
-      <Button fx:id="databaseCreator" layoutX="472.0" layoutY="26.0" mnemonicParsing="false" onAction="#openDatabaseCreator" text="Utwórz bazę" />
+      <Button fx:id="databaseCreator" layoutX="588.0" layoutY="26.0" mnemonicParsing="false" onAction="#openDatabaseCreator" text="Utwórz bazę" />
+      <Button layoutX="461.0" layoutY="26.0" mnemonicParsing="false" onAction="#drawLines" text="Odśwież model" />
    </children>
 </AnchorPane>

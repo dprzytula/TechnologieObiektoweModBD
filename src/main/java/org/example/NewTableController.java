@@ -1,7 +1,6 @@
 package org.example;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,6 +22,8 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class NewTableController {
 
@@ -39,6 +40,10 @@ public class NewTableController {
 
     @FXML
     private Button addTableButton;
+
+    @FXML
+    private Button closeTableWindow;
+
 
     @FXML
     private Pane databasePanel;
@@ -114,7 +119,6 @@ public class NewTableController {
             column.setReorderable(false);
         });
 
-
         columns.stream().forEach(column->{
             tableNameColumn.getColumns().add(column);
         });
@@ -140,10 +144,6 @@ public class NewTableController {
 //        stage.initModality(Modality.WINDOW_MODAL);
 //        stage.initOwner(addTableButtonMenu.getScene().getWindow());
         stage.show();
-
-        stage.setOnCloseRequest(windowEvent -> {
-            drawLines();
-        });
     }
 
     @FXML
@@ -246,35 +246,49 @@ public class NewTableController {
         node.setOnMouseDragged(e->{
             node.setTranslateX(e.getSceneX()-startX);
             node.setTranslateY(e.getSceneY()-startY);
+            drawLine();
+        });
+    }
+
+
+    @FXML
+    public void closeAddTableView(ActionEvent action){
+        Stage stage = (Stage)closeTableWindow.getScene().getWindow();
+        stage.close();
+    }
+
+    public void drawLine(){
+        Pane root = databasePanel;
+        Line l = new Line();
+        AtomicReference<TableView> tb = new AtomicReference<>(new TableView());
+        AtomicReference<TableView> tb2 = new AtomicReference<>(new TableView());
+        databasePanel.getChildren().stream().filter(element -> element.getTypeSelector().equals("Line")).forEach(line-> databasePanel.getChildren().remove(line));
+        relations.forEach(relation -> {
+            tb.set((TableView) databasePanel.lookup(relation.firstTableId));
+            tb2.set((TableView) databasePanel.lookup(relation.secondTableId));
+            l.setStartX(tb.get().getBoundsInParent().getMaxX());
+            l.setStartY(tb.get().getBoundsInParent().getMaxY());
+            l.setEndX(tb2.get().getBoundsInParent().getMinX());
+            l.setEndY(tb2.get().getBoundsInParent().getMinY());
+            root.getChildren().add(l);
         });
     }
 
     @FXML
-    public void drawLine(ActionEvent event){
+    public void drawLines(ActionEvent event){
         Pane root = databasePanel;
         Line l = new Line();
-        TableView tb = (TableView) databasePanel.lookup("#0");
-        TableView tb2 = (TableView) databasePanel.lookup("#1");
-        l.setStartX(tb.getBoundsInParent().getMaxX());
-        l.setStartY(tb.getBoundsInParent().getMaxY());
-        l.setEndX(tb2.getBoundsInParent().getMinX());
-        l.setEndY(tb2.getBoundsInParent().getMinY());
-        List<Node> lines = databasePanel.getChildren().stream().filter(element -> element.getTypeSelector().equals("Line")).toList();
-        lines.stream().forEach(node -> databasePanel.getChildren().remove(node));
-        root.getChildren().add(l);
-    }
+        AtomicReference<TableView> tb = new AtomicReference<>(new TableView());
+        AtomicReference<TableView> tb2 = new AtomicReference<>(new TableView());
+        relations.forEach(relation -> {
+            tb.set((TableView) databasePanel.lookup(relation.firstTableId));
+            tb2.set((TableView) databasePanel.lookup(relation.secondTableId));
+            l.setStartX(tb.get().getBoundsInParent().getMaxX());
+            l.setStartY(tb.get().getBoundsInParent().getMaxY());
+            l.setEndX(tb2.get().getBoundsInParent().getMinX());
+            l.setEndY(tb2.get().getBoundsInParent().getMinY());
+            root.getChildren().add(l);
+        });
 
-    public void drawLines(){
-        Pane root = databasePanel;
-        Line l = new Line();
-        TableView tb = (TableView) databasePanel.lookup("#0");
-        TableView tb2 = (TableView) databasePanel.lookup("#1");
-        l.setStartX(tb.getBoundsInParent().getMaxX());
-        l.setStartY(tb.getBoundsInParent().getMaxY());
-        l.setEndX(tb2.getBoundsInParent().getMinX());
-        l.setEndY(tb2.getBoundsInParent().getMinY());
-        List<Node> lines = databasePanel.getChildren().stream().filter(element -> element.getTypeSelector().equals("Line")).toList();
-        lines.stream().forEach(node -> databasePanel.getChildren().remove(node));
-        root.getChildren().add(l);
     }
 }

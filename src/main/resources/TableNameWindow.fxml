@@ -21,5 +21,6 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <Button fx:id="closeTableWindow" layoutX="95.0" layoutY="177.0" mnemonicParsing="false" onAction="#closeAddTableView" text="Wstecz" />
    </children>
 </AnchorPane>
