@@ -13,9 +13,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 public class NewTableController {
 
@@ -36,14 +35,16 @@ public class NewTableController {
     public static List<TableView> tablesToGenerate = new ArrayList<>();
 
     @FXML
-    private AnchorPane anchorNamePanel;
-
-    @FXML
     private Button addTableButton;
 
     @FXML
-    private Button closeTableWindow;
+    private Button databaseCreatorButton;
 
+    @FXML
+    private Button addRelationViewButton;
+
+    @FXML
+    private Button closeTableWindow;
 
     @FXML
     private Pane databasePanel;
@@ -56,6 +57,9 @@ public class NewTableController {
 
     @FXML
     private Button createTableButton;
+
+    @FXML
+    private Button closeInfoWindowButton;
 
     private static ObservableList<String> keyTypes = FXCollections.observableArrayList("PK");
     private static ObservableList<String> dataTypes = FXCollections.observableArrayList("INT","BIGINT", "VARCHAR","DATE");
@@ -141,8 +145,8 @@ public class NewTableController {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("AddRelationScene.fxml"));
         stage.setScene(new Scene(root, 880,520));
-//        stage.initModality(Modality.WINDOW_MODAL);
-//        stage.initOwner(addTableButtonMenu.getScene().getWindow());
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(addRelationViewButton.getScene().getWindow());
         stage.show();
     }
 
@@ -151,55 +155,104 @@ public class NewTableController {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("DbConnectionView.fxml"));
         stage.setScene(new Scene(root, 880,520));
-//        stage.initModality(Modality.WINDOW_MODAL);
-//        stage.initOwner(addTableButtonMenu.getScene().getWindow());
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(databaseCreatorButton.getScene().getWindow());
         stage.show();
     }
 
     @FXML
-    public void readScript(ActionEvent event){
+    public void readScript(ActionEvent event) throws IOException {
+        TableColumn tableColumnView = null, keyColumn = null, nameColumn = null, typeColumn = null,
+                sizeColumn = null, uniqueColumn = null, notNullColumn = null, checkColumn = null;
+        ComboBox keyColumnValue = null, typeColumnValue = null;
+        Object nameColumnValue = null, sizeColumnValue = null, checkColumnValue = null;
+        CheckBox uniqueColumnValue = null, notNullColumnValue = null;
+        String fieldName = null, fieldSize = null, fieldType = null, checkParam = null;
+        Boolean primaryKey = null, unique = null, notNull = null;
+
+        List<Field> fields = new ArrayList<>();
+        List<TableView> tableViews = new ArrayList<>();
+
         database.tables.clear();
         database.tables = emptyTables;
+
         List<Node> tables = databasePanel.getChildren().stream().filter(element -> element.getTypeSelector().equals("TableView")).toList();
-        List<TableView> tableViews = new ArrayList<>();
-        tables.forEach((table)->{
+
+        for (Node table : tables) {
             TableView tableView = (TableView) table;
             tableViews.add(tableView);
-        });
-        tableViews.forEach((table)->{
-            List<Field> fields = new ArrayList<>();
-            TableColumn tableColumnView = (TableColumn) table.getColumns().get(0);
-            for (int j = 0; j < table.getItems().size(); j++) {
-                TableColumn keyColumn = (TableColumn) tableColumnView.getColumns().get(0);
-                TableColumn nameColumn = (TableColumn) tableColumnView.getColumns().get(1);
-                TableColumn typeColumn = (TableColumn) tableColumnView.getColumns().get(2);
-                TableColumn sizeColumn = (TableColumn) tableColumnView.getColumns().get(3);
-                TableColumn uniqueColumn = (TableColumn) tableColumnView.getColumns().get(4);
-                TableColumn notNullColumn = (TableColumn) tableColumnView.getColumns().get(5);
-                TableColumn checkColumn = (TableColumn) tableColumnView.getColumns().get(6);
-                ComboBox keyColumnValue = (ComboBox) keyColumn.getCellObservableValue(j).getValue();
-                Object nameColumnValue = nameColumn.getCellObservableValue(j).getValue();
-                ComboBox typeColumnValue = (ComboBox) typeColumn.getCellObservableValue(j).getValue();
-                Object sizeColumnValue = sizeColumn.getCellObservableValue(j).getValue();
-                CheckBox uniqueColumnValue = (CheckBox) uniqueColumn.getCellObservableValue(j).getValue();
-                CheckBox notNullColumnValue = (CheckBox) notNullColumn.getCellObservableValue(j).getValue();
-                Object checkColumnValue = checkColumn.getCellObservableValue(j).getValue();
-                Boolean primaryKey = false;
-                if(keyColumnValue.getSelectionModel().getSelectedItem().equals("PK")){
-                    primaryKey = true;
-                }
-                String fieldName = nameColumnValue.toString();
-                String fieldType = typeColumnValue.getSelectionModel().getSelectedItem().toString();
-                Integer fieldSize = Integer.valueOf(sizeColumnValue.toString());
-                Boolean unique = uniqueColumnValue.isSelected();
-                Boolean notNull = notNullColumnValue.isSelected();
-                String checkParam = checkColumnValue.toString();
-                fields.add(Field.builder().fieldName(fieldName).fieldType(fieldType).fieldSize(fieldSize).primaryKey(primaryKey)
-                        .unique(unique).notNull(notNull).checkParam(checkParam).build());
+        }
+
+        for (TableView tableView : tableViews) {
+            fieldName = null; fieldSize = "0"; fieldType = null; checkParam = null;
+            primaryKey = false; unique = null; notNull = null;
+            fields.clear();
+            tableColumnView = (TableColumn) tableView.getColumns().get(0);
+            keyColumn = (TableColumn) tableColumnView.getColumns().get(0);
+            nameColumn = (TableColumn) tableColumnView.getColumns().get(1);
+            typeColumn = (TableColumn) tableColumnView.getColumns().get(2);
+            sizeColumn = (TableColumn) tableColumnView.getColumns().get(3);
+            uniqueColumn = (TableColumn) tableColumnView.getColumns().get(4);
+            notNullColumn = (TableColumn) tableColumnView.getColumns().get(5);
+            checkColumn = (TableColumn) tableColumnView.getColumns().get(6);
+            for (int j = 0; j < tableView.getItems().size(); j++) {
+                keyColumnValue = (ComboBox) keyColumn.getCellObservableValue(j).getValue();
+                nameColumnValue = nameColumn.getCellObservableValue(j).getValue();
+                typeColumnValue = (ComboBox) typeColumn.getCellObservableValue(j).getValue();
+                sizeColumnValue = sizeColumn.getCellObservableValue(j).getValue();
+                uniqueColumnValue = (CheckBox) uniqueColumn.getCellObservableValue(j).getValue();
+                notNullColumnValue = (CheckBox) notNullColumn.getCellObservableValue(j).getValue();
+                checkColumnValue = checkColumn.getCellObservableValue(j).getValue();
+
+                if(keyColumnValue.equals("PK")) primaryKey = true;
+                if(nameColumnValue.toString()!=null) fieldName = nameColumnValue.toString();
+                if(typeColumnValue.getSelectionModel().getSelectedItem()!=null) fieldType = typeColumnValue.getSelectionModel().getSelectedItem().toString();
+                if(uniqueColumnValue.toString()!=null) unique = uniqueColumnValue.isSelected();
+                if(notNullColumnValue.toString()!=null) notNull = notNullColumnValue.isSelected();
+                if(checkColumnValue.toString()!=null) checkParam = checkColumnValue.toString();
+                if(!sizeColumnValue.equals("")) fieldSize = sizeColumnValue.toString();
+
+                fields.add(Field.builder()
+                        .fieldName(String.valueOf(fieldName))
+                        .fieldType(String.valueOf(fieldType))
+                        .fieldSize(Integer.valueOf(fieldSize))
+                        .primaryKey(Boolean.valueOf(String.valueOf(primaryKey)))
+                        .unique(Boolean.valueOf(String.valueOf(unique)))
+                        .notNull(Boolean.valueOf(String.valueOf(notNull)))
+                        .checkParam(String.valueOf(checkParam)).build());
             }
-            System.out.println(table.getId());
-            database.tables.add(Table.addTable(table.getId(), tableColumnView.getText(), fields));
-        });
+                if(TableValidator.validateTableToAdd(fields)) database.tables.add(Table.addTable(tableView.getId(), tableColumnView.getText(), fields));
+                else {
+                    Stage stageError = new Stage();
+                    stageError.setTitle("Error");
+                    Label label = new Label("Tabela "+tableColumnView.getText()+" nie została zapisana!");
+                    Button button = new Button("Rozumiem");
+                    button.setId("closeInfoWindowButton");
+                    label.setLayoutY(20);
+                    label.setLayoutX(24);
+                    button.setOnAction(event1 -> {
+                        stageError.close();
+                    });
+                    button.setLayoutX(75);
+                    button.setLayoutY(50);
+                    Pane layout = new Pane();
+                    layout.setMinSize(180, 100);
+                    layout.getChildren().add(label);
+                    layout.getChildren().add(button);
+                    Scene scene = new Scene(layout, 210, 100);
+                    stageError.setScene(scene);
+                    stageError.show();
+
+                }
+
+        }
+
+        Stage stageInfo = new Stage();
+        Parent rootInfo = FXMLLoader.load(getClass().getClassLoader().getResource("ScriptSavedScene.fxml"));
+        stageInfo.setScene(new Scene(rootInfo));
+        stageInfo.setTitle("Info");
+        stageInfo.show();
+
     }
 
     @FXML
@@ -210,6 +263,8 @@ public class NewTableController {
         stage.setMinWidth(300);
         stage.setMinHeight(200);
         stage.setScene(new Scene(root));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(addTableButton.getScene().getWindow());
         stage.show();
 
         stage.setOnCloseRequest(windowEvent -> {
@@ -290,5 +345,12 @@ public class NewTableController {
             root.getChildren().add(l);
         });
 
+    }
+
+
+    @FXML
+    public void closeInfoWindow(ActionEvent action){
+        Stage stage = (Stage)closeInfoWindowButton.getScene().getWindow();
+        stage.close();
     }
 }

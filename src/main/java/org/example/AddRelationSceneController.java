@@ -29,6 +29,9 @@ public class AddRelationSceneController {
     private Button addRelationButton;
 
     @FXML
+    private Button closeWindowButton;
+
+    @FXML
     void initialize(){
         ObservableList<String> tables = FXCollections.observableArrayList();
         database.tables.forEach(table-> tables.add(table.tableName));
@@ -45,5 +48,12 @@ public class AddRelationSceneController {
         relations.add(Relation.addRelation(firstTableId, secondTableId, relationType.getSelectionModel().getSelectedItem().toString()));
         stage.close();
     }
+
+    @FXML
+    public void closeAddRelationWindow(ActionEvent action){
+        Stage stage = (Stage)closeWindowButton.getScene().getWindow();
+        stage.close();
+    }
+
 
 }

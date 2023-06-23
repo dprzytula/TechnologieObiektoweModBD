@@ -9,7 +9,7 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DbConnectionController">
    <children>
       <Button layoutX="324.0" layoutY="293.0" mnemonicParsing="false" onAction="#createDatabase" text="Utwórz bazę" />
-      <Button layoutX="164.0" layoutY="293.0" mnemonicParsing="false" text="Wyjdź" />
+      <Button fx:id="closeWindowButton" layoutX="164.0" layoutY="293.0" mnemonicParsing="false" onAction="#closeWindow" text="Wstecz" />
       <TextField fx:id="loginDb" layoutX="197.0" layoutY="71.0" />
       <Label layoutX="126.0" layoutY="75.0" text="Login" />
       <Label layoutX="127.0" layoutY="123.0" text="Hasło" />

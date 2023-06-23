@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -37,6 +38,9 @@ public class DbConnectionController extends Application {
 
     @FXML
     private TextField portDb;
+
+    @FXML
+    private Button closeWindowButton;
 
     @FXML
     public void createDatabase(ActionEvent event) throws SQLException {
@@ -84,6 +88,12 @@ public class DbConnectionController extends Application {
         stage.setHeight(1080);
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    @FXML
+    public void closeWindow(ActionEvent action){
+        Stage stage = (Stage)closeWindowButton.getScene().getWindow();
+        stage.close();
     }
 
 }

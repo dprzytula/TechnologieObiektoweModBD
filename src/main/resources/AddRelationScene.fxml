@@ -14,6 +14,6 @@
       <Label layoutX="442.0" layoutY="80.0" text="Tabela druga:" />
       <Label layoutX="265.0" layoutY="80.0" text="Rodzaj relacji" />
       <ComboBox fx:id="relationType" layoutX="225.0" layoutY="107.0" prefWidth="150.0" promptText="Wybierz typ relacji..." style="-fx-alignment: center;" />
-      <Button layoutX="300.0" layoutY="175.0" mnemonicParsing="false" text="Wstecz" />
+      <Button fx:id="closeWindowButton" layoutX="300.0" layoutY="175.0" mnemonicParsing="false" onAction="#closeAddRelationWindow" text="Wstecz" />
    </children>
 </AnchorPane>
