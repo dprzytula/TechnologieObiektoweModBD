@@ -204,7 +204,7 @@ public class NewTableController {
                 notNullColumnValue = (CheckBox) notNullColumn.getCellObservableValue(j).getValue();
                 checkColumnValue = checkColumn.getCellObservableValue(j).getValue();
 
-                if(keyColumnValue.equals("PK")) primaryKey = true;
+                if(keyColumnValue.getSelectionModel().getSelectedItem().equals("PK")) primaryKey = true;
                 if(nameColumnValue.toString()!=null) fieldName = nameColumnValue.toString();
                 if(typeColumnValue.getSelectionModel().getSelectedItem()!=null) fieldType = typeColumnValue.getSelectionModel().getSelectedItem().toString();
                 if(uniqueColumnValue.toString()!=null) unique = uniqueColumnValue.isSelected();
