@@ -296,13 +296,21 @@ public class NewTableController {
         node.setOnMousePressed(e->{
             startX = e.getSceneX()-node.getTranslateX();
             startY = e.getSceneY()-node.getTranslateY();
+            clearPanel();
+            drawLine();
         });
 
         node.setOnMouseDragged(e->{
             node.setTranslateX(e.getSceneX()-startX);
             node.setTranslateY(e.getSceneY()-startY);
+            clearPanel();
             drawLine();
         });
+
+        node.setOnMouseReleased(e->{
+            drawLine();
+        });
+
     }
 
 
@@ -312,39 +320,47 @@ public class NewTableController {
         stage.close();
     }
 
+
+    public void clearPanel(){
+        databasePanel.getChildren().stream().filter(element -> element.getTypeSelector().equals("Line")).forEach(line-> databasePanel.getChildren().remove(line));
+    }
+
+
     public void drawLine(){
-        Pane root = databasePanel;
-        Line l = new Line();
         AtomicReference<TableView> tb = new AtomicReference<>(new TableView());
         AtomicReference<TableView> tb2 = new AtomicReference<>(new TableView());
-        databasePanel.getChildren().stream().filter(element -> element.getTypeSelector().equals("Line")).forEach(line-> databasePanel.getChildren().remove(line));
         relations.forEach(relation -> {
+            Line l = new Line();
             tb.set((TableView) databasePanel.lookup(relation.firstTableId));
             tb2.set((TableView) databasePanel.lookup(relation.secondTableId));
             l.setStartX(tb.get().getBoundsInParent().getMaxX());
             l.setStartY(tb.get().getBoundsInParent().getMaxY());
             l.setEndX(tb2.get().getBoundsInParent().getMinX());
             l.setEndY(tb2.get().getBoundsInParent().getMinY());
-            root.getChildren().add(l);
+            if(relation.getRelationType()=="N:N"){
+                l.setStrokeWidth(5);
+            }
+            databasePanel.getChildren().add(l);
         });
     }
 
     @FXML
     public void drawLines(ActionEvent event){
-        Pane root = databasePanel;
-        Line l = new Line();
-        AtomicReference<TableView> tb = new AtomicReference<>(new TableView());
-        AtomicReference<TableView> tb2 = new AtomicReference<>(new TableView());
-        relations.forEach(relation -> {
-            tb.set((TableView) databasePanel.lookup(relation.firstTableId));
-            tb2.set((TableView) databasePanel.lookup(relation.secondTableId));
-            l.setStartX(tb.get().getBoundsInParent().getMaxX());
-            l.setStartY(tb.get().getBoundsInParent().getMaxY());
-            l.setEndX(tb2.get().getBoundsInParent().getMinX());
-            l.setEndY(tb2.get().getBoundsInParent().getMinY());
-            root.getChildren().add(l);
-        });
-
+            AtomicReference<TableView> tb = new AtomicReference<>(new TableView());
+            AtomicReference<TableView> tb2 = new AtomicReference<>(new TableView());
+            relations.forEach(relation -> {
+                Line l = new Line();
+                tb.set((TableView) databasePanel.lookup(relation.firstTableId));
+                tb2.set((TableView) databasePanel.lookup(relation.secondTableId));
+                l.setStartX(tb.get().getBoundsInParent().getMaxX());
+                l.setStartY(tb.get().getBoundsInParent().getMaxY());
+                l.setEndX(tb2.get().getBoundsInParent().getMinX());
+                l.setEndY(tb2.get().getBoundsInParent().getMinY());
+                if(relation.getRelationType().equals("N:N")){
+                    l.setStrokeWidth(10);
+                }
+                databasePanel.getChildren().add(l);
+            });
     }
 
 
